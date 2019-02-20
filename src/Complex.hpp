@@ -316,8 +316,9 @@ inline Complex<float> rintf(Complex<float> const& c) {
 	return Complex<float>(rintf(c.x), rintf(c.y));
 }
 
+template <typename real_type>
 __host__ __device__
-inline Complex<float> cfmaf(Complex<float> x, Complex<float> y, Complex<float> d) {
+inline Complex<float> cfmaf(Complex<real_type> x, Complex<real_type> y, Complex<float> d) {
     float real_res;
     float imag_res;
     
@@ -330,8 +331,9 @@ inline Complex<float> cfmaf(Complex<float> x, Complex<float> y, Complex<float> d
     return Complex<float>(real_res, imag_res);
 }
 
+template <typename real_type>
 __host__ __device__
-inline Complex<double> cfma(Complex<double> x, Complex<double> y, Complex<double> d) {
+inline Complex<double> cfma(Complex<real_type> x, Complex<real_type> y, Complex<double> d) {
     double real_res;
     double imag_res;
     
@@ -344,8 +346,9 @@ inline Complex<double> cfma(Complex<double> x, Complex<double> y, Complex<double
     return Complex<double>(real_res, imag_res);
 }
 
+template <typename real_type>
 __host__ __device__
-inline Complex<float> cfcmaf(Complex<float> x, Complex<float> y, Complex<float> d) {
+inline Complex<float> cfcmaf(Complex<real_type> x, Complex<real_type> y, Complex<float> d) {
     float real_res;
     float imag_res;
     
@@ -358,8 +361,9 @@ inline Complex<float> cfcmaf(Complex<float> x, Complex<float> y, Complex<float> 
     return Complex<float>(real_res, imag_res);
 }
 
+template <typename real_type>
 __host__ __device__
-inline Complex<double> cfcma(Complex<double> x, Complex<double> y, Complex<double> d) {
+inline Complex<double> cfcma(Complex<real_type> x, Complex<real_type> y, Complex<double> d) {
     double real_res;
     double imag_res;
     
