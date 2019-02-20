@@ -322,11 +322,11 @@ inline Complex<float> cfmaf(Complex<real_type> x, Complex<real_type> y, Complex<
     float real_res;
     float imag_res;
     
-    real_res = (x.x *  y.x) + d.x;
-    imag_res = (x.x *  y.y) + d.y;
+    real_res = ((float) x.x *  y.x) + d.x;
+    imag_res = ((float) x.x *  y.y) + d.y;
             
-    real_res = -(x.y * y.y) + real_res;  
-    imag_res =  (x.y * y.x) + imag_res;          
+    real_res = -((float) x.y * y.y) + real_res;
+    imag_res =  ((float) x.y * y.x) + imag_res;
      
     return Complex<float>(real_res, imag_res);
 }
@@ -337,11 +337,11 @@ inline Complex<double> cfma(Complex<real_type> x, Complex<real_type> y, Complex<
     double real_res;
     double imag_res;
     
-    real_res = (x.x *  y.x) + d.x;
-    imag_res = (x.x *  y.y) + d.y;
+    real_res = ((double) x.x *  y.x) + d.x;
+    imag_res = ((double) x.x *  y.y) + d.y;
             
-    real_res = -(x.y * y.y) + real_res;  
-    imag_res =  (x.y * y.x) + imag_res;          
+    real_res = -((double) x.y * y.y) + real_res;
+    imag_res =  ((double) x.y * y.x) + imag_res;
      
     return Complex<double>(real_res, imag_res);
 }
@@ -352,11 +352,11 @@ inline Complex<float> cfcmaf(Complex<real_type> x, Complex<real_type> y, Complex
     float real_res;
     float imag_res;
     
-    real_res = (x.x *  y.x) + d.x;
-    imag_res = (x.x *  y.y) + d.y;
+    real_res = ((float) x.x *  y.x) + d.x;
+    imag_res = ((float) x.x *  y.y) + d.y;
             
-    real_res =  (x.y * y.y) + real_res;  
-    imag_res = -(x.y * y.x) + imag_res;          
+    real_res =  ((float) x.y * y.y) + real_res;
+    imag_res = -((float) x.y * y.x) + imag_res;
      
     return Complex<float>(real_res, imag_res);
 }
@@ -367,11 +367,11 @@ inline Complex<double> cfcma(Complex<real_type> x, Complex<real_type> y, Complex
     double real_res;
     double imag_res;
     
-    real_res = (x.x *  y.x) + d.x;
-    imag_res = (x.x *  y.y) + d.y;
+    real_res = ((double) x.x *  y.x) + d.x;
+    imag_res = ((double) x.x *  y.y) + d.y;
             
-    real_res =  (x.y * y.y) + real_res;  
-    imag_res = -(x.y * y.x) + imag_res;          
+    real_res =  ((double) x.y * y.y) + real_res;
+    imag_res = -((double) x.y * y.x) + imag_res;
      
     return Complex<double>(real_res, imag_res);
 }
