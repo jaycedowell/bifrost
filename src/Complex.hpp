@@ -292,6 +292,7 @@ inline T type_pun(U x) {
 
 #ifdef __CUDA_ARCH__
 #if defined(__CUDACC_VER_MAJOR__) && __CUDACC_VER_MAJOR__ >= 9
+
 __device__
 inline Complex<float> __shfl_sync(unsigned mask, Complex<float> const& c,
                                   int index, int width=warpSize) {
@@ -313,4 +314,60 @@ inline Complex<float> __shfl(Complex<float> const& c,
 __host__ __device__
 inline Complex<float> rintf(Complex<float> const& c) {
 	return Complex<float>(rintf(c.x), rintf(c.y));
+}
+
+__host__ __device__
+inline Complex<float> cfmaf(Complex<float> x, Complex<float> y, Complex<float> d) {
+    float real_res;
+    float imag_res;
+    
+    real_res = (x.x *  y.x) + d.x;
+    imag_res = (x.x *  y.y) + d.y;
+            
+    real_res = -(x.y * y.y) + real_res;  
+    imag_res =  (x.y * y.x) + imag_res;          
+     
+    return Complex<float>(real_res, imag_res);
+}
+
+__host__ __device__
+inline Complex<double> cfma(Complex<double> x, Complex<double> y, Complex<double> d) {
+    double real_res;
+    double imag_res;
+    
+    real_res = (x.x *  y.x) + d.x;
+    imag_res = (x.x *  y.y) + d.y;
+            
+    real_res = -(x.y * y.y) + real_res;  
+    imag_res =  (x.y * y.x) + imag_res;          
+     
+    return Complex<double>(real_res, imag_res);
+}
+
+__host__ __device__
+inline Complex<float> cfcmaf(Complex<float> x, Complex<float> y, Complex<float> d) {
+    float real_res;
+    float imag_res;
+    
+    real_res = (x.x *  y.x) + d.x;
+    imag_res = (x.x *  y.y) + d.y;
+            
+    real_res =  (x.y * y.y) + real_res;  
+    imag_res = -(x.y * y.x) + imag_res;          
+     
+    return Complex<float>(real_res, imag_res);
+}
+
+__host__ __device__
+inline Complex<double> cfcma(Complex<double> x, Complex<double> y, Complex<double> d) {
+    double real_res;
+    double imag_res;
+    
+    real_res = (x.x *  y.x) + d.x;
+    imag_res = (x.x *  y.y) + d.y;
+            
+    real_res =  (x.y * y.y) + real_res;  
+    imag_res = -(x.y * y.x) + imag_res;          
+     
+    return Complex<double>(real_res, imag_res);
 }
