@@ -252,10 +252,11 @@ inline bool is_contiguous(const BFarray* array) {
 	//if( array->ndim == 0 ) {
 	//	return true;
 	//}
-	BFsize logical_size = BF_DTYPE_NBYTE(array->dtype);
+	BFsize logical_size = BF_DTYPE_NBIT(array->dtype);
 	for( int d=0; d<array->ndim; ++d ) {
 		logical_size *= array->shape[d];
 	}
+	logical_size /= 8;
 	BFsize physical_size = capacity_bytes(array);
 	return logical_size == physical_size;
 }
@@ -265,7 +266,7 @@ inline BFsize num_contiguous_elements(const BFarray* array ) {
 	//	return 1;
 	//}
 	// Assumes array is contiguous
-	return capacity_bytes(array) / BF_DTYPE_NBYTE(array->dtype);
+	return capacity_bytes(array) * 8 / BF_DTYPE_NBIT(array->dtype);
 }
 
 // Merges together contiguous dimensions
