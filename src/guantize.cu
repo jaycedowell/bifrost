@@ -60,7 +60,7 @@ inline __device__ F clip_2bit(F x) {
 
 template<typename F>
 inline __device__ F clip_1bit(F x) {
-	return x >= F(0) ? F(1) : F(0);
+	return x >= F(0) ? F(0) : F(-1);
 }
 
 template<typename IType, typename SType, typename OType>
