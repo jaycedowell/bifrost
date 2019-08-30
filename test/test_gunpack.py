@@ -98,3 +98,49 @@ class UnpackTest(unittest.TestCase):
                              [(0x87,),(0xA5,)]],
                             dtype='ci4')
         self.run_unpack_to_cf32_test(iarray.byteswap().conj())
+        
+    def run_unpack_to_i8_test(self, iarray):
+        shape = list(iarray.shape)
+        shape[-1] *= 2
+        oarray = bf.ndarray(shape=shape, dtype='i8')
+        oarray_known = bf.ndarray([[0, 1, 2, 3],
+                                   [4, 5, 6, 7],
+                                   [-8, -7, -6, -5]],
+                                  dtype='i8')
+        bf.unpack.unpack(iarray, oarray)
+        np.testing.assert_equal(oarray, oarray_known)
+    def test_i4_to_i8(self):
+        iarray = bf.ndarray([[(0x10,),(0x32,)],
+                             [(0x54,),(0x76,)],
+                             [(0x98,),(0xBA,)]],
+                            dtype='i4')
+        self.run_unpack_to_i8_test(iarray)
+    def test_i4_to_i8_byteswap(self):
+        iarray = bf.ndarray([[(0x01,),(0x23,)],
+                             [(0x45,),(0x67,)],
+                             [(0x89,),(0xAB,)]],
+                            dtype='i4')
+        self.run_unpack_to_i8_test(iarray.byteswap())
+        
+    def run_unpack_to_i8_test_tiny(self, iarray):
+        shape = list(iarray.shape)
+        shape[-1] *= 8
+        oarray = bf.ndarray(shape=shape, dtype='i8')
+        oarray_known = bf.ndarray([[-1, 0, -1, 0, -1, 0, -1, 0],
+                                   [0, 0, -1, -1, 0, 0, -1, -1],
+                                   [0, -1, 0, -1, 0, 0, 0, 0]],
+                                  dtype='i8')
+        bf.unpack.unpack(iarray, oarray)
+        np.testing.assert_equal(oarray, oarray_known)
+    def test_i1_to_i8(self):
+        iarray = bf.ndarray([[(0b01010101,)],
+                             [(0b11001100,)],
+                             [(0b00001010,)]],
+                            dtype='i1')
+        self.run_unpack_to_i8_test_tiny(iarray)
+    def test_i1_to_i8_byteswap(self):
+        iarray = bf.ndarray([[(0b10101010,)],
+                             [(0b00110011,)],
+                             [(0b01010000,)]],
+                            dtype='i1')
+        self.run_unpack_to_i8_test_tiny(iarray.byteswap())
