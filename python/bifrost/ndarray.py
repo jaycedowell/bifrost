@@ -166,6 +166,17 @@ class ndarray(np.ndarray):
                         base = np.array(base)
                 if not isinstance(base, ndarray) and dtype is not None:
                     base = base.astype(dtype.as_numpy_dtype())
+                    
+                shape = base.shape
+                if dtype is not None:
+                    itemsize_bits = dtype.itemsize_bits
+                    # HACK to support 'packed' arrays, by folding the last
+                    #   dimension of the shape into the dtype.
+                    if itemsize_bits < 8:
+                        pack_factor = 8 // itemsize_bits
+                        shape = list(shape)
+                        shape[-1] *= pack_factor
+                        
                 base = ndarray(base) # View base as bf.ndarray
                 if dtype is not None and base.bf.dtype != dtype:
                     raise TypeError('Unable to convert type %s to %s during '
@@ -179,7 +190,7 @@ class ndarray(np.ndarray):
                 # Create copy of base array
                 obj = ndarray.__new__(cls,
                                       space=space,
-                                      shape=base.shape,
+                                      shape=shape,
                                       dtype=base.bf.dtype,
                                       native=base.bf.native,
                                       conjugated=conjugated)

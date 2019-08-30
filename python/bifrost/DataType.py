@@ -32,7 +32,12 @@ f:  floating point
 ci: complex   signed integer
 cf: complex floating pointer
 
+i1:   1-bit signed integer
+u1:   1-bit unsigned integer
+i2:   2-bit signed integer
+u2:   2-bit unsigned integer
 i4:   4-bit signed integer
+u4:   4-bit unsigned integer
 f16:  16-bit floating point
 ci4:  4+4-bit complex signed integer
 cf32: 32+32-bit complex floating point
@@ -41,6 +46,13 @@ cf32: 32+32-bit complex floating point
 from libbifrost import _bf
 import numpy as np
 
+# Custom dtype to represent addition sub-bytes types
+i1 = np.dtype([('on_tw_th_fo_fi_si_se_ei', np.int8)])
+u1 = np.dtype([('un_uw_uh_uo_ui_ui_ue_ui', np.uint8)])
+i2 = np.dtype([('one_two_thr_fou', np.int8)])
+u2 = np.dtype([('une_uwo_uhr_uou', np.uint8)])
+i4 = np.dtype([('one_two', np.int8)])
+u4 = np.dtype([('une_uwo', np.uint8)])
 # Custom dtypes to represent additional complex types
 # Note: These can be constructed using tuples
 #   E.g., np.ndarray([(0x10,), (0x32,)], dtype=ci4) # Special case
@@ -77,10 +89,14 @@ KINDMAP = {
     _bf.BF_DTYPE_FLOAT_TYPE: 'f'
 }
 NUMPY_TYPEMAP = {
-    'i':  {  8: np.int8,  16: np.int16,
-             32: np.int32, 64: np.int64},
-    'u':  {  8: np.uint8,  16: np.uint16,
-             32: np.uint32, 64: np.uint64},
+    'i':  {  1: i1,        2: i2,
+             4: i4,        8: np.int8,
+             16: np.int16, 32: np.int32,
+             64: np.int64},
+    'u':  {  1: u1,         2: u2,
+             4: u4,         8: np.uint8,
+             16: np.uint16, 32: np.uint32,
+             64: np.uint64},
     'f':  {16: np.float16,  32: np.float32,
            64: np.float64, 128: np.float128},
     # HACK: These are just types that match the storage size;
@@ -150,9 +166,22 @@ class DataType(object):
             if t.kind == 'c':
                 self._nbit /= 2   # Bifrost convention is nbit per real component
                 self._kind = 'cf' # Numpy only supports floating-point complex types
-            elif t.kind == 'V': # WAR to support custom integer complex types
+            elif t.kind == 'V': # WAR to support custom sub-byte integer types and 
+                                # custom integer complex types
                 self._nbit /= 2
-                if t in [ci4, ci8, ci16, ci32, ci64]:
+                if t in [i1, i2, i4]:
+                    self._kind = 'i'
+                    if t in [i1, i2]:
+                        self._nbit /= 2
+                    if t in [i1,]:
+                        self._nbit /= 2
+                elif t in [u1, u2, u4,]:
+                    self._kind = 'u'
+                    if t in [u1, u2]:
+                        self._nbit /= 2
+                    if t in [u1,]:
+                        self._nbit /= 2
+                elif t in [ci4, ci8, ci16, ci32, ci64]:
                     self._kind = 'ci'
                 elif t in [cf16]:
                     self._kind = 'cf'
