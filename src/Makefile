@@ -103,6 +103,10 @@ ifdef ALIGNMENT
   CPPFLAGS   += -DBF_ALIGNMENT=$(ALIGNMENT)
 endif
 
+ifdef MAPPED_RING_DIR
+  CPPFLAGS   += -DBF_MAPPED_RING_DIR='"$(patsubst %/,%,$(MAPPED_RING_DIR))"'
+endif
+
 ifdef CUDA_DEBUG
   NVCCFLAGS += -G
 endif
